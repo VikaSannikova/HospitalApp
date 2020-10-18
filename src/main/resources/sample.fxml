@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" style="-fx-background-color: #2E3348;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controllers.Controller">
+   <children>
+      <AnchorPane layoutY="104.0" prefHeight="296.0" prefWidth="700.0" style="-fx-background-color: #fafafa;">
+         <children>
+            <Button fx:id="loginSignUpButton" layoutX="418.0" layoutY="81.0" mnemonicParsing="false" style="-fx-background-color: #F39C63;" text="Зарегистрироваться" textAlignment="CENTER" textFill="WHITE">
+               <font>
+                  <Font name="Elephant" size="15.0" />
+               </font>
+            </Button>
+            <TextField fx:id="login_field" layoutX="152.0" layoutY="55.0" promptText="Логин" />
+            <TextField fx:id="password_field" layoutX="152.0" layoutY="98.0" promptText="Пароль" />
+            <Button fx:id="authSignInButton" layoutX="202.0" layoutY="155.0" mnemonicParsing="false" text="Войти" />
+            <Label layoutX="350.0" layoutY="89.0" text="или" />
+            <Label fx:id="error_input_label" layoutX="147.0" layoutY="130.0" text="Неверный логин или пароль" textFill="WHITE" />
+         </children>
+      </AnchorPane>
+      <Label layoutX="48.0" layoutY="14.0" text="Клуб неанонимных ипохондриков" textFill="#f0ecec">
+         <font>
+            <Font name="Harlow Solid Italic" size="39.0" />
+         </font>
+      </Label>
+      <Label layoutX="158.0" layoutY="73.0" text="У Вас что-то болит? Расскажите об этом всем! " textFill="#b5a2a2">
+         <font>
+            <Font name="Times New Roman" size="19.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
