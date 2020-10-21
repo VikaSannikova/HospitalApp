@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.gluonhq.charm.glisten.control.ToggleButtonGroup?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" style="-fx-background-color: #2E3348;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controllers.ProfileController">
+    <children>
+        <AnchorPane layoutY="68.0" prefHeight="332.0" prefWidth="700.0" style="-fx-background-color: #fafafa;">
+         <children>
+            <TabPane prefHeight="332.0" prefWidth="700.0" tabClosingPolicy="UNAVAILABLE">
+              <tabs>
+                  <Tab fx:id="user_data" text="Личные данные">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <Button fx:id="update_button" disable="true" layoutX="28.0" layoutY="245.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="115.0" text="Обновить данные" />
+                              <TextField fx:id="fn_tf" layoutX="28.0" layoutY="36.0" prefHeight="35.0" prefWidth="200.0" />
+                              <TextField fx:id="ln_tf" layoutX="256.0" layoutY="36.0" prefHeight="35.0" prefWidth="200.0" />
+                              <TextField fx:id="dob_tf" layoutX="28.0" layoutY="89.0" prefHeight="35.0" prefWidth="200.0" />
+                              <TextField fx:id="login_tf" layoutX="28.0" layoutY="144.0" prefHeight="35.0" prefWidth="200.0" />
+                              <TextField fx:id="phone_number_tf" layoutX="28.0" layoutY="195.0" prefHeight="35.0" prefWidth="200.0" />
+                              <TextField fx:id="email_tf" layoutX="255.0" layoutY="195.0" prefHeight="35.0" prefWidth="200.0" />
+                              <Label layoutX="28.0" layoutY="19.0" text="Имя">
+                                 <font>
+                                    <Font size="13.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="256.0" layoutY="19.0" text="Фамилия">
+                                 <font>
+                                    <Font size="13.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="28.0" layoutY="72.0" text="Дата рождения">
+                                 <font>
+                                    <Font size="13.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="256.0" layoutY="72.0" text="Пол">
+                                 <font>
+                                    <Font size="13.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="28.0" layoutY="125.0" text="Логин">
+                                 <font>
+                                    <Font size="13.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="257.0" layoutY="127.0" text="Пароль">
+                                 <font>
+                                    <Font size="13.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="29.0" layoutY="179.0" text="Номер телефона">
+                                 <font>
+                                    <Font size="13.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="256.0" layoutY="179.0" text="E-mail">
+                                 <font>
+                                    <Font size="13.0" />
+                                 </font>
+                              </Label>
+                              <PasswordField fx:id="password_tf" layoutX="256.0" layoutY="144.0" prefHeight="35.0" prefWidth="200.0" />
+                              <ToggleButtonGroup fx:id="buts" layoutX="252.0" layoutY="89.0" prefHeight="35.0" prefWidth="200.0" selectionType="SINGLE">
+                                  <toggles>
+                                      <ToggleButton fx:id="male_but" prefHeight="35.0" prefWidth="100.0" text="Мужской" />
+                                      <ToggleButton fx:id="female_but" prefHeight="35.0" prefWidth="100.0" text="Женский" />
+                                  </toggles>
+                              </ToggleButtonGroup>
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </Tab>
+                  <Tab fx:id="add_doctor" text="Записаться к врачу">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                    </content>
+                  </Tab>
+                  <Tab fx:id="history" text="История обращений">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                    </content>
+                  </Tab>
+              </tabs>
+            </TabPane>
+         </children>
+        </AnchorPane>
+      <Label layoutX="13.0" layoutY="5.0" text="Личный кабинет" textFill="WHITE">
+         <font>
+            <Font size="40.0" />
+         </font>
+      </Label>
+    </children>
+</AnchorPane>

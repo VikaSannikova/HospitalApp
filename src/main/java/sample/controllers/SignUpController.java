@@ -1,16 +1,22 @@
-package sample.Controllers;
+package sample.controllers;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import sample.Handlers.DatabaseHandler;
 import sample.Patient;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 
 public class SignUpController {
 
@@ -49,7 +55,23 @@ public class SignUpController {
 
         su_button.setOnAction(actionEvent -> {
             signUpNewUser();
+            openProfile();
         });
+    }
+
+    private void openProfile(){
+        su_button.getScene().getWindow().hide();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(Objects.requireNonNull(getClass().getClassLoader().getResource("profile.fxml")));
+        try {
+            loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Parent root = loader.getRoot();
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root));
+        stage.showAndWait();
     }
 
     private void signUpNewUser() {
