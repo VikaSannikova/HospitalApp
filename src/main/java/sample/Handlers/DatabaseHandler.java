@@ -73,4 +73,36 @@ public class DatabaseHandler extends Configs {
         }
         return  resultSet;
     }
+
+    public void updatePatient(Patient old_patient, Patient new_patient){
+        String update = "UPDATE " + Const.PATIENT_TABLE +
+                " SET " + Const.PATIENT_FIRSTNAME + " = ?," +
+                Const.PATIENT_LASTNAME + " = ?," +
+                Const.PATIENT_USERNAME + " = ?," +
+                Const.PATIENT_PASSWORD + " = ?," +
+                Const.PATIENT_SEX + " = ?," +
+                Const.PATIENT_DOB + " = ?," +
+                Const.PATIENT_PHONENUMBER + " = ?," +
+                Const.PATIENT_EMAIL + " = ?" +
+                " WHERE " + Const.PATIENT_ID + " = ?";
+        try {
+            PreparedStatement preparedStatement = null;
+            preparedStatement = getDbConnection().prepareStatement(update);
+            preparedStatement.setString(1, new_patient.getFirstname());
+            preparedStatement.setString(2, new_patient.getLastname());
+            preparedStatement.setString(3, new_patient.getUsername());
+            preparedStatement.setString(4, new_patient.getPassword());
+            preparedStatement.setString(5, new_patient.getSex());
+            preparedStatement.setString(6, new_patient.getDob());
+            preparedStatement.setString(7, new_patient.getPhone_number());
+            preparedStatement.setString(8, new_patient.getEmail());
+            preparedStatement.setString(9, old_patient.getID());
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 }

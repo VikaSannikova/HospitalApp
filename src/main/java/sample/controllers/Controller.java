@@ -86,7 +86,7 @@ public class Controller {
 
         if (resultSet.next()) {
             // если несколько пользователей - то первый самый
-            int id = resultSet.getInt(Const.PATIENT_ID);
+            String id = resultSet.getString(Const.PATIENT_ID);
             String fn = resultSet.getString(Const.PATIENT_FIRSTNAME);
             String ln = resultSet.getString(Const.PATIENT_LASTNAME);
             String login = resultSet.getString(Const.PATIENT_USERNAME);
@@ -95,7 +95,7 @@ public class Controller {
             String dob = resultSet.getString(Const.PATIENT_DOB);
             String phone_number = resultSet.getString(Const.PATIENT_PHONENUMBER);
             String email = resultSet.getString(Const.PATIENT_EMAIL);
-            Patient pat = new Patient(fn, ln, login, password, sex, dob, phone_number, email);
+            Patient pat = new Patient(id, fn, ln, login, password, sex, dob, phone_number, email);
             System.out.println("Такой пользователь есть!");
             error_input_label.setTextFill(Color.color(1, 1, 1));
             openProfile(pat);
@@ -118,6 +118,7 @@ public class Controller {
         stage.setScene(new Scene(root));
         // соединение с другой формой
         ProfileController profileController = loader.getController(); //получаем контроллер для второй формы
+        profileController.setPatient(patient);
         profileController.setFields(patient); // передаем необходимые параметры
         stage.showAndWait();
     }

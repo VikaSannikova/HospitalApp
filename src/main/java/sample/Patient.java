@@ -1,6 +1,7 @@
 package sample;
 
 public class Patient {
+    private String ID;
     private String firstname;
     private String lastname;
     private String username;
@@ -9,6 +10,18 @@ public class Patient {
     private String dob;
     private String phone_number;
     private String email;
+
+    public Patient(String ID, String firstname, String lastname, String username, String password, String sex, String dob, String phone_number, String email) {
+        this.ID = ID;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.username = username;
+        this.password = password;
+        this.sex = sex;
+        this.dob = dob;
+        this.phone_number = phone_number;
+        this.email = email;
+    }
 
     public Patient(String firstname, String lastname, String username, String password, String sex, String dob, String phone_number, String email) {
         this.firstname = firstname;
@@ -22,6 +35,18 @@ public class Patient {
     }
 
     public Patient() {
+    }
+
+    public Patient(Patient patient) {
+        this.ID = patient.getID();
+        this.firstname = patient.getFirstname();
+        this.lastname = patient.getLastname();
+        this.username = patient.getUsername();
+        this.password = patient.getPassword();
+        this.sex = patient.getSex();
+        this.dob = patient.getDob();
+        this.phone_number = patient.getPhone_number();
+        this.email = patient.getEmail();
     }
 
     public String getFirstname() {
@@ -87,4 +112,8 @@ public class Patient {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public String getID() { return ID; }
+
+    public void setID(String ID) { this.ID = ID; }
 }
