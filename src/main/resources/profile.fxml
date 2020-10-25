@@ -2,12 +2,16 @@
 
 <?import com.gluonhq.charm.glisten.control.ToggleButtonGroup?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
@@ -15,7 +19,7 @@
     <children>
         <AnchorPane layoutY="68.0" prefHeight="332.0" prefWidth="700.0" style="-fx-background-color: #fafafa;">
          <children>
-            <TabPane prefHeight="332.0" prefWidth="700.0" tabClosingPolicy="UNAVAILABLE">
+            <TabPane fx:id="tab_pane" prefHeight="332.0" prefWidth="700.0" tabClosingPolicy="UNAVAILABLE">
               <tabs>
                   <Tab fx:id="user_data" text="Личные данные">
                     <content>
@@ -81,7 +85,37 @@
                   </Tab>
                   <Tab fx:id="add_doctor" text="Записаться к врачу">
                     <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <Label layoutX="14.0" layoutY="20.0" text="Выберите врача:">
+                                 <font>
+                                    <Font size="13.0" />
+                                 </font>
+                              </Label>
+                              <ComboBox fx:id="choose_a_doctor" layoutX="14.0" layoutY="40.0" prefHeight="35.0" prefWidth="200.0" />
+                              <Label layoutX="14.0" layoutY="85.0" text="Выберите время:">
+                                 <font>
+                                    <Font size="13.0" />
+                                 </font>
+                              </Label>
+                              <DatePicker fx:id="choose_a_date" layoutX="14.0" layoutY="103.0" prefHeight="35.0" prefWidth="200.0" />
+                              <Label fx:id="fn_label" layoutX="296.0" layoutY="21.0" text="Имя" />
+                              <Label fx:id="ln_label" layoutX="295.0" layoutY="86.0" text="Фамилия" />
+                              <Label fx:id="speciality_label" layoutX="295.0" layoutY="151.0" text="Специальность" />
+                              <Label fx:id="cab_label" layoutX="299.0" layoutY="223.0" text="Номер кабинета" />
+                              <Label fx:id="pn_label" layoutX="472.0" layoutY="223.0" text="Телефон" />
+                              <Button layoutX="64.0" layoutY="169.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="150.0" text="Записаться на прием" />
+                              <TextField fx:id="doc_fn_tf" editable="false" layoutX="296.0" layoutY="39.0" prefHeight="35.0" prefWidth="200.0" />
+                              <TextField fx:id="doc_ln_tf" editable="false" layoutX="296.0" layoutY="103.0" prefHeight="35.0" prefWidth="200.0" />
+                              <TextField fx:id="speciality_tf" editable="false" layoutX="296.0" layoutY="169.0" prefHeight="35.0" prefWidth="200.0" />
+                              <TextField fx:id="pn_tf" editable="false" layoutX="472.0" layoutY="241.0" prefHeight="35.0" prefWidth="200.0" />
+                              <TextField fx:id="cab_tf" editable="false" layoutX="296.0" layoutY="241.0" prefHeight="35.0" prefWidth="150.0" />
+                              <ImageView fx:id="doc_image" fitHeight="181.0" fitWidth="182.0" layoutX="493.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@doctor-clipart-doctor.png" />
+                                 </image>
+                              </ImageView>
+                           </children></AnchorPane>
                     </content>
                   </Tab>
                   <Tab fx:id="history" text="История обращений">
@@ -98,5 +132,6 @@
             <Font size="40.0" />
          </font>
       </Label>
+      <Button fx:id="exit_button" layoutX="613.0" layoutY="14.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="73.0" text="Выйти" />
     </children>
 </AnchorPane>

@@ -3,6 +3,7 @@ package sample.Handlers;
 import com.mysql.cj.jdbc.Driver;
 import sample.Configs;
 import sample.Const;
+import sample.Doctor;
 import sample.Patient;
 
 import java.sql.Connection;
@@ -14,21 +15,22 @@ import java.sql.ResultSet;
 
 public class DatabaseHandler extends Configs {
     Connection dbConnection;
-    public  Connection getDbConnection() throws ClassNotFoundException, SQLException{
+
+    public Connection getDbConnection() throws ClassNotFoundException, SQLException {
         String connectionString = "jdbc:mysql://" + dbHost + ":" + dbPort + "/" + dbName;
-        String URL = "jdbc:mysql://localhost:3306/hospital"+
-                "?verifyServerCertificate=false"+
-                "&useSSL=false"+
-                "&requireSSL=false"+
-                "&useLegacyDatetimeCode=false"+
-                "&amp"+
+        String URL = "jdbc:mysql://localhost:3306/hospital" +
+                "?verifyServerCertificate=false" +
+                "&useSSL=false" +
+                "&requireSSL=false" +
+                "&useLegacyDatetimeCode=false" +
+                "&amp" +
                 "&serverTimezone=UTC";
         Class.forName("com.mysql.cj.jdbc.Driver");
         dbConnection = DriverManager.getConnection(URL, dbUser, dbPass);
         return dbConnection;
     }
 
-    public void signUpUser(Patient patient){
+    public void signUpUser(Patient patient) {
         String insert = "INSERT INTO " + Const.PATIENT_TABLE +
                 "(" + Const.PATIENT_FIRSTNAME + ", " + Const.PATIENT_LASTNAME +
                 "," + Const.PATIENT_USERNAME + ", " + Const.PATIENT_PASSWORD +
@@ -55,7 +57,7 @@ public class DatabaseHandler extends Configs {
         }
     }
 
-    public ResultSet getPatient(Patient patient){
+    public ResultSet getPatient(Patient patient) {
         ResultSet resultSet = null;
         String select = "SELECT * FROM " + Const.PATIENT_TABLE + " WHERE " +
                 Const.PATIENT_USERNAME + "=? AND " + Const.PATIENT_PASSWORD + "=?";
@@ -71,10 +73,10 @@ public class DatabaseHandler extends Configs {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        return  resultSet;
+        return resultSet;
     }
 
-    public void updatePatient(Patient old_patient, Patient new_patient){
+    public void updatePatient(Patient old_patient, Patient new_patient) {
         String update = "UPDATE " + Const.PATIENT_TABLE +
                 " SET " + Const.PATIENT_FIRSTNAME + " = ?," +
                 Const.PATIENT_LASTNAME + " = ?," +
@@ -104,5 +106,41 @@ public class DatabaseHandler extends Configs {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    public ResultSet getDoctorsList() {
+        ResultSet resultSet = null;
+        String select = "SELECT " + Const.DOCTOR_FIRSTNAME + "," + Const.DOCTOR_LASTNAME + "," + Const.DOCTOR_SPECIALITY +
+                " FROM " + Const.DOCTOR_TABLE;
+        try {
+            PreparedStatement preparedStatement = null;
+            preparedStatement = getDbConnection().prepareStatement(select);
+
+            resultSet = preparedStatement.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return resultSet;
+    }
+    public ResultSet findDoctor(Doctor doctor){
+        ResultSet resultSet = null;
+        String select = "SELECT * FROM " + Const.DOCTOR_TABLE + " WHERE " +
+                Const.DOCTOR_FIRSTNAME + "=? AND " + Const.DOCTOR_LASTNAME + "=? AND " + Const.DOCTOR_SPECIALITY + "=?";
+        try {
+            PreparedStatement preparedStatement = null;
+            preparedStatement = getDbConnection().prepareStatement(select);
+            preparedStatement.setString(1, doctor.getFirstname());
+            preparedStatement.setString(2, doctor.getLastname());
+            preparedStatement.setString(3, doctor.getSpeciality());
+
+            resultSet = preparedStatement.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return resultSet;
     }
 }

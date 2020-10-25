@@ -62,7 +62,6 @@ public class Controller {
         });
 
        loginSignUpButton.setOnAction(actionEvent -> {
-           loginSignUpButton.getScene().getWindow().hide();
            FXMLLoader loader = new FXMLLoader();
            loader.setLocation(Objects.requireNonNull(getClass().getClassLoader().getResource("signUp.fxml")));
            try {
@@ -71,9 +70,8 @@ public class Controller {
                e.printStackTrace();
            }
            Parent root = loader.getRoot();
-           Stage stage = new Stage();
-           stage.setScene(new Scene(root));
-           stage.showAndWait();
+           Stage curstage = (Stage) loginSignUpButton.getScene().getWindow();
+           curstage.setScene(new Scene(root));
        });
     }
 
@@ -105,7 +103,6 @@ public class Controller {
     }
 
     private void openProfile(Patient patient){
-        authSignInButton.getScene().getWindow().hide();
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(Objects.requireNonNull(getClass().getClassLoader().getResource("profile.fxml")));
         try {
@@ -114,13 +111,17 @@ public class Controller {
             e.printStackTrace();
         }
         Parent root = loader.getRoot();
-        Stage stage = new Stage();
-        stage.setScene(new Scene(root));
+        Stage curstage = (Stage) authSignInButton.getScene().getWindow();
+        curstage.setScene(new Scene(root));
         // соединение с другой формой
         ProfileController profileController = loader.getController(); //получаем контроллер для второй формы
         profileController.setPatient(patient);
-        profileController.setFields(patient); // передаем необходимые параметры
-        stage.showAndWait();
+        profileController.setFields(patient);
+        try {
+            profileController.setDoctorsList();// передаем необходимые параметры
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
 

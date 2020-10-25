@@ -13,6 +13,13 @@ public class Const {
     public static final String PATIENT_EMAIL = "email";
     public static final String PATIENT_DOCID = "doc_id";
 
-
     public static final String DOCTOR_TABLE = "doctors";
+    public static final String DOCTOR_ID = "iddoc";
+    public static final String DOCTOR_FIRSTNAME = "first_name";
+    public static final String DOCTOR_LASTNAME = "last_name";
+    public static final String DOCTOR_SPECIALITY = "speciality";
+    public static final String DOCTOR_CABINET = "cabinet";
+    public static final String DOCTOR_PHONENUMBER = "phone_number";
+
+
 }

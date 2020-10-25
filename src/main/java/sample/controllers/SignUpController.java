@@ -12,6 +12,7 @@ import sample.Handlers.DatabaseHandler;
 import sample.Patient;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -19,6 +20,9 @@ import java.util.Locale;
 import java.util.Objects;
 
 public class SignUpController {
+
+    @FXML
+    private Button exit_button;
 
     @FXML
     private TextField su_first_name;
@@ -55,12 +59,22 @@ public class SignUpController {
 
         su_button.setOnAction(actionEvent -> {
             signUpNewUser();
-            openProfile();
+        });
+        exit_button.setOnAction(actionEvent -> {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(Objects.requireNonNull(getClass().getClassLoader().getResource("sample.fxml")));
+            try {
+                loader.load();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Parent root = loader.getRoot();
+            Stage curstage = (Stage) exit_button.getScene().getWindow();
+            curstage.setScene(new Scene(root));
         });
     }
 
-    private void openProfile(){
-        su_button.getScene().getWindow().hide();
+    private void openProfile(Patient patient){
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(Objects.requireNonNull(getClass().getClassLoader().getResource("profile.fxml")));
         try {
@@ -69,9 +83,16 @@ public class SignUpController {
             e.printStackTrace();
         }
         Parent root = loader.getRoot();
-        Stage stage = new Stage();
-        stage.setScene(new Scene(root));
-        stage.showAndWait();
+        Stage curstage = (Stage) su_button.getScene().getWindow();
+        curstage.setScene(new Scene(root));
+        ProfileController profileController = loader.getController(); //получаем контроллер для второй формы
+        profileController.setPatient(patient);
+        profileController.setFields(patient);
+        try {
+            profileController.setDoctorsList();// передаем необходимые параметры
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     private void signUpNewUser() {
@@ -105,6 +126,7 @@ public class SignUpController {
         Patient patient = new Patient(firstname, lastname, username, password, sex, dob, phone_number, email);
 
         databaseHandler.signUpUser(patient);
+        openProfile(patient);
     }
 
 }
