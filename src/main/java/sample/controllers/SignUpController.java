@@ -76,7 +76,7 @@ public class SignUpController {
 
     private void openProfile(Patient patient){
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(Objects.requireNonNull(getClass().getClassLoader().getResource("profile.fxml")));
+        loader.setLocation(Objects.requireNonNull(getClass().getClassLoader().getResource("patient_profile.fxml")));
         try {
             loader.load();
         } catch (IOException e) {
@@ -85,11 +85,11 @@ public class SignUpController {
         Parent root = loader.getRoot();
         Stage curstage = (Stage) su_button.getScene().getWindow();
         curstage.setScene(new Scene(root));
-        ProfileController profileController = loader.getController(); //получаем контроллер для второй формы
-        profileController.setPatient(patient);
-        profileController.setFields(patient);
+        PatientProfileController patientProfileController = loader.getController(); //получаем контроллер для второй формы
+        patientProfileController.setPatient(patient);
+        patientProfileController.setFields(patient);
         try {
-            profileController.setDoctorsList();// передаем необходимые параметры
+            patientProfileController.setDoctorsList();// передаем необходимые параметры
         } catch (SQLException e) {
             e.printStackTrace();
         }

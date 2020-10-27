@@ -1,6 +1,5 @@
 package sample.Handlers;
 
-import com.mysql.cj.jdbc.Driver;
 import sample.Configs;
 import sample.Const;
 import sample.Doctor;
@@ -66,6 +65,25 @@ public class DatabaseHandler extends Configs {
             preparedStatement = getDbConnection().prepareStatement(select);
             preparedStatement.setString(1, patient.getUsername());
             preparedStatement.setString(2, patient.getPassword());
+
+            resultSet = preparedStatement.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return resultSet;
+    }
+
+    public ResultSet getDoctor(Doctor doctor) {
+        ResultSet resultSet = null;
+        String select = "SELECT * FROM " + Const.DOCTOR_TABLE + " WHERE " +
+                Const.DOCTOR_USERNAME + "=? AND " + Const.DOCTOR_PASSWORD + "=?";
+        try {
+            PreparedStatement preparedStatement = null;
+            preparedStatement = getDbConnection().prepareStatement(select);
+            preparedStatement.setString(1, doctor.getUsername());
+            preparedStatement.setString(2, doctor.getPassword());
 
             resultSet = preparedStatement.executeQuery();
         } catch (SQLException e) {
@@ -143,4 +161,52 @@ public class DatabaseHandler extends Configs {
         }
         return resultSet;
     }
+
+    public void addRequestToDiagnoses(Patient patient, String doc_id, String date){
+        String insert = "INSERT INTO " + Const.DIAGNOSES_TABLE +
+                "(" + Const.DIAGNOSES_PATIENT_ID + ", " + Const.DIAGNOSES_DOCTOR_ID + ", " + Const.DIAGNOSES_DATE + ") " +
+                "VALUES(?,?,?)";
+        try {
+            PreparedStatement preparedStatement = null;
+            preparedStatement = getDbConnection().prepareStatement(insert);
+            preparedStatement.setString(1, patient.getID());
+            preparedStatement.setString(2, doc_id);
+            preparedStatement.setString(3, date);
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public ResultSet getAllRequests(Patient patient){
+        ResultSet resultSet = null;
+        String select = "SELECT " + Const.DOCTOR_FIRSTNAME + "," +
+                                    Const.DOCTOR_LASTNAME + "," +
+                                    Const.DOCTOR_SPECIALITY + "," +
+                                    Const.DIAGNOSES_NAME + "," +
+                                    Const.DIAGNOSES_DATE + "," +
+                                    Const.RECIPES_RECOMEND + "," +
+                                    Const.RECIPES_TOTALCOST + " FROM " +
+                        Const.DOCTOR_TABLE + " doc LEFT OUTER JOIN " + Const.DIAGNOSES_TABLE + " diag ON " +
+                        "doc." + Const.DOCTOR_ID +"=diag." + Const.DIAGNOSES_DOCTOR_ID +
+                        " LEFT OUTER JOIN " + Const.RECIPES_TABLE + " rec ON " +
+                        "diag." + Const.DIAGNOSES_ID + "=rec." + Const.RECIPES_DIAGNOS_ID +
+                        " WHERE " + "diag." +Const.DIAGNOSES_PATIENT_ID + "=?";
+        try {
+            PreparedStatement preparedStatement = null;
+            preparedStatement = getDbConnection().prepareStatement(select);
+            preparedStatement.setString(1, patient.getID());
+
+            resultSet = preparedStatement.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return resultSet;
+    }
+
 }

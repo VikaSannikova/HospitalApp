@@ -17,10 +17,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import sample.Const;
+import sample.Doctor;
 import sample.Handlers.DatabaseHandler;
 import sample.Patient;
-
-import javax.print.DocFlavor;
 
 public class Controller {
 
@@ -80,31 +79,49 @@ public class Controller {
         Patient patient = new Patient();
         patient.setUsername(loginText);
         patient.setPassword(loginPassword);
-        ResultSet resultSet = databaseHandler.getPatient(patient);
+        Doctor doctor = new Doctor();
+        doctor.setUsername(loginText);
+        doctor.setPassword(loginPassword);
+        ResultSet resultSetPatients = databaseHandler.getPatient(patient);
+        ResultSet resultSetDoctors = databaseHandler.getDoctor(doctor);
 
-        if (resultSet.next()) {
+        if (resultSetPatients.next()) {
             // если несколько пользователей - то первый самый
-            String id = resultSet.getString(Const.PATIENT_ID);
-            String fn = resultSet.getString(Const.PATIENT_FIRSTNAME);
-            String ln = resultSet.getString(Const.PATIENT_LASTNAME);
-            String login = resultSet.getString(Const.PATIENT_USERNAME);
-            String password = resultSet.getString(Const.PATIENT_PASSWORD);
-            String sex = resultSet.getString(Const.PATIENT_SEX);
-            String dob = resultSet.getString(Const.PATIENT_DOB);
-            String phone_number = resultSet.getString(Const.PATIENT_PHONENUMBER);
-            String email = resultSet.getString(Const.PATIENT_EMAIL);
+            String id = resultSetPatients.getString(Const.PATIENT_ID);
+            String fn = resultSetPatients.getString(Const.PATIENT_FIRSTNAME);
+            String ln = resultSetPatients.getString(Const.PATIENT_LASTNAME);
+            String login = resultSetPatients.getString(Const.PATIENT_USERNAME);
+            String password = resultSetPatients.getString(Const.PATIENT_PASSWORD);
+            String sex = resultSetPatients.getString(Const.PATIENT_SEX);
+            String dob = resultSetPatients.getString(Const.PATIENT_DOB);
+            String phone_number = resultSetPatients.getString(Const.PATIENT_PHONENUMBER);
+            String email = resultSetPatients.getString(Const.PATIENT_EMAIL);
             Patient pat = new Patient(id, fn, ln, login, password, sex, dob, phone_number, email);
-            System.out.println("Такой пользователь есть!");
+            System.out.println("Такой пациент есть!");
             error_input_label.setTextFill(Color.color(1, 1, 1));
-            openProfile(pat);
+            openPatientProfile(pat);
+        } else if (resultSetDoctors.next()){
+            // если несколько пользователей - то первый самый
+            String id = resultSetDoctors.getString(Const.DOCTOR_ID);
+            String fn = resultSetDoctors.getString(Const.DOCTOR_FIRSTNAME);
+            String ln = resultSetDoctors.getString(Const.DOCTOR_LASTNAME);
+            String login = resultSetDoctors.getString(Const.DOCTOR_USERNAME);
+            String password = resultSetDoctors.getString(Const.DOCTOR_PASSWORD);
+            String speciality = resultSetDoctors.getString(Const.DOCTOR_SPECIALITY);
+            String cabinet = resultSetDoctors.getString(Const.DOCTOR_CABINET);
+            String phone_number = resultSetDoctors.getString(Const.DOCTOR_PHONENUMBER);
+            Doctor doc = new Doctor(id, fn, ln,login,password,speciality,cabinet,phone_number);
+            System.out.println("Такой доктор есть!");
+            error_input_label.setTextFill(Color.color(1, 1, 1));
+            openDoctorProfile(doc);
         } else {
             error_input_label.setTextFill(Color.color(0,0,0));
         }
     }
 
-    private void openProfile(Patient patient){
+    private void openPatientProfile(Patient patient){
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(Objects.requireNonNull(getClass().getClassLoader().getResource("profile.fxml")));
+        loader.setLocation(Objects.requireNonNull(getClass().getClassLoader().getResource("patient_profile.fxml")));
         try {
             loader.load();
         } catch (IOException e) {
@@ -114,14 +131,38 @@ public class Controller {
         Stage curstage = (Stage) authSignInButton.getScene().getWindow();
         curstage.setScene(new Scene(root));
         // соединение с другой формой
-        ProfileController profileController = loader.getController(); //получаем контроллер для второй формы
-        profileController.setPatient(patient);
-        profileController.setFields(patient);
+        PatientProfileController patientProfileController = loader.getController(); //получаем контроллер для второй формы
+        patientProfileController.setPatient(patient);
+        patientProfileController.setFields(patient);
+        patientProfileController.fillRequestTable();
         try {
-            profileController.setDoctorsList();// передаем необходимые параметры
+            patientProfileController.setDoctorsList();// передаем необходимые параметры
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    private void openDoctorProfile(Doctor doctor){
+//        FXMLLoader loader = new FXMLLoader();
+//        loader.setLocation(Objects.requireNonNull(getClass().getClassLoader().getResource("patient_profile.fxml")));
+//        try {
+//            loader.load();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        Parent root = loader.getRoot();
+//        Stage curstage = (Stage) authSignInButton.getScene().getWindow();
+//        curstage.setScene(new Scene(root));
+//        // соединение с другой формой
+//        ProfileController profileController = loader.getController(); //получаем контроллер для второй формы
+//        profileController.setPatient(patient);
+//        profileController.setFields(patient);
+//        try {
+//            profileController.setDoctorsList();// передаем необходимые параметры
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+        System.out.println("Открывается профиль доктора");
     }
 }
 

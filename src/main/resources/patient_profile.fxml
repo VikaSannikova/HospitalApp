@@ -8,6 +8,8 @@
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.image.Image?>
@@ -15,7 +17,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" style="-fx-background-color: #2E3348;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controllers.ProfileController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" style="-fx-background-color: #2E3348;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controllers.PatientProfileController">
     <children>
         <AnchorPane layoutY="68.0" prefHeight="332.0" prefWidth="700.0" style="-fx-background-color: #fafafa;">
          <children>
@@ -104,7 +106,7 @@
                               <Label fx:id="speciality_label" layoutX="295.0" layoutY="151.0" text="Специальность" />
                               <Label fx:id="cab_label" layoutX="299.0" layoutY="223.0" text="Номер кабинета" />
                               <Label fx:id="pn_label" layoutX="472.0" layoutY="223.0" text="Телефон" />
-                              <Button layoutX="64.0" layoutY="169.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="150.0" text="Записаться на прием" />
+                              <Button fx:id="add_request" layoutX="64.0" layoutY="169.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="150.0" text="Записаться на прием" />
                               <TextField fx:id="doc_fn_tf" editable="false" layoutX="296.0" layoutY="39.0" prefHeight="35.0" prefWidth="200.0" />
                               <TextField fx:id="doc_ln_tf" editable="false" layoutX="296.0" layoutY="103.0" prefHeight="35.0" prefWidth="200.0" />
                               <TextField fx:id="speciality_tf" editable="false" layoutX="296.0" layoutY="169.0" prefHeight="35.0" prefWidth="200.0" />
@@ -120,7 +122,27 @@
                   </Tab>
                   <Tab fx:id="history" text="История обращений">
                     <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <TableView fx:id="request_table" layoutX="14.0" layoutY="14.0" prefHeight="275.0" prefWidth="672.0">
+                                <columns>
+                                  <TableColumn fx:id="doc_col" prefWidth="75.0" text="Доктор">
+                                       <columns>
+                                          <TableColumn fx:id="doc_fn_col" prefWidth="70.39999389648438" text="Имя" />
+                                          <TableColumn fx:id="doc_ln_col" prefWidth="76.0" text="Фамилия" />
+                                          <TableColumn fx:id="doc_spec_col" prefWidth="108.0" text="Специальность" />
+                                       </columns>
+                                    </TableColumn>
+                                  <TableColumn fx:id="diag_col" prefWidth="75.0" text="Диагноз" />
+                                    <TableColumn fx:id="date_col" editable="false" prefWidth="131.20001220703125" text="Дата обследования" />
+                                    <TableColumn fx:id="rec_col" prefWidth="98.4000244140625" text="Рекомендации" />
+                                    <TableColumn fx:id="cost_col" prefWidth="75.0" text="К оплате" />
+                                </columns>
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
+                              </TableView>
+                           </children></AnchorPane>
                     </content>
                   </Tab>
               </tabs>
