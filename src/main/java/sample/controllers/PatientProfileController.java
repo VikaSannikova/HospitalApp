@@ -336,9 +336,9 @@ public class PatientProfileController {
 
     public void fillRequestTable() {
         DatabaseHandler databaseHandler = new DatabaseHandler();
-        ResultSet resultSet = databaseHandler.getAllRequests(patient);
+        ResultSet resultSet = databaseHandler.getAllRequestsFromParient(patient);
         try {
-            ObservableList<UserRequest> userRequests = getRequsrtList(resultSet);
+            ObservableList<UserRequest> userRequests = getRequestListFromPatient(resultSet);
             request_table.setItems(userRequests);
             request_table.setRowFactory((TableView<UserRequest> paramP) -> new TableRow<UserRequest>() {
                 @Override
@@ -361,7 +361,7 @@ public class PatientProfileController {
         }
     }
 
-    private ObservableList<UserRequest> getRequsrtList(ResultSet resultSet) throws SQLException {
+    private ObservableList<UserRequest> getRequestListFromPatient(ResultSet resultSet) throws SQLException {
         ObservableList<UserRequest> result = FXCollections.observableArrayList();
         while (resultSet.next()) {
             String doc_fn = resultSet.getString(Const.DOCTOR_FIRSTNAME);

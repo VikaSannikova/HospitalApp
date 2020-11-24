@@ -143,22 +143,23 @@ public class Controller {
     }
 
     private void openDoctorProfile(Doctor doctor){
-//        FXMLLoader loader = new FXMLLoader();
-//        loader.setLocation(Objects.requireNonNull(getClass().getClassLoader().getResource("patient_profile.fxml")));
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(Objects.requireNonNull(getClass().getClassLoader().getResource("doctor_profile.fxml")));
+        try {
+            loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Parent root = loader.getRoot();
+        Stage curstage = (Stage) authSignInButton.getScene().getWindow();
+        curstage.setScene(new Scene(root));
+        // соединение с другой формой
+        DoctorProfileController doctorProfileController = loader.getController(); //получаем контроллер для второй формы
+        doctorProfileController.setDoctor(doctor);
+        doctorProfileController.setFields(doctor);
+        doctorProfileController.fillRequestTable();
 //        try {
-//            loader.load();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        Parent root = loader.getRoot();
-//        Stage curstage = (Stage) authSignInButton.getScene().getWindow();
-//        curstage.setScene(new Scene(root));
-//        // соединение с другой формой
-//        ProfileController profileController = loader.getController(); //получаем контроллер для второй формы
-//        profileController.setPatient(patient);
-//        profileController.setFields(patient);
-//        try {
-//            profileController.setDoctorsList();// передаем необходимые параметры
+//            DoctorProfileController.setPatientsList();// передаем необходимые параметры
 //        } catch (SQLException e) {
 //            e.printStackTrace();
 //        }

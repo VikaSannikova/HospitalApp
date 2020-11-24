@@ -41,6 +41,17 @@ public class Doctor {
         this.phone_number = phone_number;
     }
 
+    public Doctor(Doctor doctor) {
+        this.ID = doctor.getID();
+        this.firstname = doctor.getFirstname();
+        this.lastname = doctor.getLastname();
+        this.username = doctor.getUsername();
+        this.password = doctor.getPassword();
+        this.speciality = doctor.getSpeciality();
+        this.cabinet = doctor.getCabinet();
+        this.phone_number = doctor.phone_number;
+    }
+
     public String getID() {
         return ID;
     }

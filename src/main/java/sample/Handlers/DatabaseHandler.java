@@ -1,9 +1,6 @@
 package sample.Handlers;
 
-import sample.Configs;
-import sample.Const;
-import sample.Doctor;
-import sample.Patient;
+import sample.*;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -142,7 +139,8 @@ public class DatabaseHandler extends Configs {
         }
         return resultSet;
     }
-    public ResultSet findDoctor(Doctor doctor){
+
+    public ResultSet findDoctor(Doctor doctor) {
         ResultSet resultSet = null;
         String select = "SELECT * FROM " + Const.DOCTOR_TABLE + " WHERE " +
                 Const.DOCTOR_FIRSTNAME + "=? AND " + Const.DOCTOR_LASTNAME + "=? AND " + Const.DOCTOR_SPECIALITY + "=?";
@@ -162,7 +160,7 @@ public class DatabaseHandler extends Configs {
         return resultSet;
     }
 
-    public void addRequestToDiagnoses(Patient patient, String doc_id, String date){
+    public void addRequestToDiagnoses(Patient patient, String doc_id, String date) {
         String insert = "INSERT INTO " + Const.DIAGNOSES_TABLE +
                 "(" + Const.DIAGNOSES_PATIENT_ID + ", " + Const.DIAGNOSES_DOCTOR_ID + ", " + Const.DIAGNOSES_DATE + ") " +
                 "VALUES(?,?,?)";
@@ -181,20 +179,20 @@ public class DatabaseHandler extends Configs {
         }
     }
 
-    public ResultSet getAllRequests(Patient patient){
+    public ResultSet getAllRequestsFromParient(Patient patient) {
         ResultSet resultSet = null;
         String select = "SELECT " + Const.DOCTOR_FIRSTNAME + "," +
-                                    Const.DOCTOR_LASTNAME + "," +
-                                    Const.DOCTOR_SPECIALITY + "," +
-                                    Const.DIAGNOSES_NAME + "," +
-                                    Const.DIAGNOSES_DATE + "," +
-                                    Const.RECIPES_RECOMEND + "," +
-                                    Const.RECIPES_TOTALCOST + " FROM " +
-                        Const.DOCTOR_TABLE + " doc LEFT OUTER JOIN " + Const.DIAGNOSES_TABLE + " diag ON " +
-                        "doc." + Const.DOCTOR_ID +"=diag." + Const.DIAGNOSES_DOCTOR_ID +
-                        " LEFT OUTER JOIN " + Const.RECIPES_TABLE + " rec ON " +
-                        "diag." + Const.DIAGNOSES_ID + "=rec." + Const.RECIPES_DIAGNOS_ID +
-                        " WHERE " + "diag." +Const.DIAGNOSES_PATIENT_ID + "=?";
+                Const.DOCTOR_LASTNAME + "," +
+                Const.DOCTOR_SPECIALITY + "," +
+                Const.DIAGNOSES_NAME + "," +
+                Const.DIAGNOSES_DATE + "," +
+                Const.RECIPES_RECOMEND + "," +
+                Const.RECIPES_TOTALCOST + " FROM " +
+                Const.DOCTOR_TABLE + " doc LEFT OUTER JOIN " + Const.DIAGNOSES_TABLE + " diag ON " +
+                "doc." + Const.DOCTOR_ID + "=diag." + Const.DIAGNOSES_DOCTOR_ID +
+                " LEFT OUTER JOIN " + Const.RECIPES_TABLE + " rec ON " +
+                "diag." + Const.DIAGNOSES_ID + "=rec." + Const.RECIPES_DIAGNOS_ID +
+                " WHERE " + "diag." + Const.DIAGNOSES_PATIENT_ID + "=?";
         try {
             PreparedStatement preparedStatement = null;
             preparedStatement = getDbConnection().prepareStatement(select);
@@ -209,4 +207,112 @@ public class DatabaseHandler extends Configs {
         return resultSet;
     }
 
+    public void updateDoctor(Doctor doctor, Doctor upd_doctor) {
+        String update = "UPDATE " + Const.DOCTOR_TABLE +
+                " SET " + Const.DOCTOR_FIRSTNAME + " = ?," +
+                Const.DOCTOR_LASTNAME + " = ?," +
+                Const.DOCTOR_SPECIALITY + " = ?," +
+                Const.DOCTOR_CABINET + " = ?," +
+                Const.DOCTOR_USERNAME + " = ?," +
+                Const.DOCTOR_PASSWORD + " = ?," +
+                Const.DOCTOR_PHONENUMBER + " = ?" +
+                " WHERE " + Const.DOCTOR_ID + " = ?";
+        try {
+            PreparedStatement preparedStatement = null;
+            preparedStatement = getDbConnection().prepareStatement(update);
+            preparedStatement.setString(1, upd_doctor.getFirstname());
+            preparedStatement.setString(2, upd_doctor.getLastname());
+            preparedStatement.setString(3, upd_doctor.getSpeciality());
+            preparedStatement.setString(4, upd_doctor.getCabinet());
+            preparedStatement.setString(5, upd_doctor.getUsername());
+            preparedStatement.setString(6, upd_doctor.getPassword());
+            preparedStatement.setString(7, upd_doctor.getPhone_number());
+            preparedStatement.setString(8, doctor.getID());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public ResultSet getAllRequestsToDoctor(Doctor doctor) {
+        ResultSet resultSet = null;
+        String select = "SELECT " + Const.PATIENT_FIRSTNAME + "," +
+                Const.PATIENT_LASTNAME + "," +
+                Const.PATIENT_SEX + "," +
+                Const.DIAGNOSES_ID + "," +
+                Const.DIAGNOSES_NAME + "," +
+                Const.DIAGNOSES_DATE + "," +
+                Const.RECIPES_RECOMEND + "," +
+                Const.RECIPES_TOTALCOST + " FROM " +
+                Const.PATIENT_TABLE + " pat LEFT OUTER JOIN " + Const.DIAGNOSES_TABLE + " diag ON " +
+                "pat." + Const.PATIENT_ID + "=diag." + Const.DIAGNOSES_PATIENT_ID +
+                " LEFT OUTER JOIN " + Const.RECIPES_TABLE + " rec ON " +
+                "diag." + Const.DIAGNOSES_ID + "=rec." + Const.RECIPES_DIAGNOS_ID +
+                " WHERE " + "diag." + Const.DIAGNOSES_DOCTOR_ID + "=? AND (" +
+                Const.DIAGNOSES_NAME + " is null OR " + Const.RECIPES_RECOMEND + " is null OR " + Const.RECIPES_TOTALCOST + " is null)";
+        try {
+            PreparedStatement preparedStatement = null;
+            preparedStatement = getDbConnection().prepareStatement(select);
+            preparedStatement.setString(1, doctor.getID());
+
+            resultSet = preparedStatement.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return resultSet;
+    }
+
+    public void updateUserRequestByDoctor(DoctorRequest doctorRequest) {
+        String update = "UPDATE " + Const.DIAGNOSES_TABLE +
+                " SET " + Const.DIAGNOSES_NAME + " = ?" +
+                " WHERE " + Const.DIAGNOSES_ID + " = ?";
+        try {
+            PreparedStatement preparedStatement = null;
+            preparedStatement = getDbConnection().prepareStatement(update);
+            preparedStatement.setString(1, doctorRequest.getDiag_name());
+            preparedStatement.setString(2, doctorRequest.getDiag_id());
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        String insert = "INSERT INTO " + Const.RECIPES_TABLE +
+                "(" + Const.RECIPES_RECOMEND + ", " + Const.RECIPES_TOTALCOST + "," + Const.RECIPES_DIAGNOS_ID + ")" + " SELECT  ?,?,?" +
+                " WHERE NOT EXISTS ( SELECT * FROM " + Const.RECIPES_TABLE + " WHERE " + Const.RECIPES_DIAGNOS_ID + " = ?)";
+        try {
+            PreparedStatement preparedStatement = null;
+            preparedStatement = getDbConnection().prepareStatement(insert);
+            preparedStatement.setString(1, doctorRequest.getRecomend());
+            preparedStatement.setString(2, doctorRequest.getCost());
+            preparedStatement.setString(3, doctorRequest.getDiag_id());
+            preparedStatement.setString(4, doctorRequest.getDiag_id());
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        String update_rec = "UPDATE " + Const.RECIPES_TABLE + " SET " + Const.RECIPES_RECOMEND + "=?, " + Const.RECIPES_TOTALCOST + "=?" +
+                " WHERE " + Const.RECIPES_DIAGNOS_ID + "=?;";
+        try {
+            PreparedStatement preparedStatement = null;
+            preparedStatement = getDbConnection().prepareStatement(update_rec);
+            preparedStatement.setString(1, doctorRequest.getRecomend());
+            preparedStatement.setString(2, doctorRequest.getCost());
+            preparedStatement.setString(3, doctorRequest.getDiag_id());
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 }
