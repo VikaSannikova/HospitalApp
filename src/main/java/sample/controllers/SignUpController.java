@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -55,10 +56,20 @@ public class SignUpController {
     private TextField su_password;
 
     @FXML
+    private Label exist_label;
+
+    @FXML
     void initialize() {
 
         su_button.setOnAction(actionEvent -> {
-            signUpNewUser();
+            if (su_first_name.getText().trim().isEmpty() || su_last_name.getText().trim().isEmpty() ||
+                    su_user_name.getText().trim().isEmpty() || su_password.getText().trim().isEmpty() ||
+                    su_phone_number.getText().trim().isEmpty() || su_email.getText().trim().isEmpty()) {
+                exist_label.setText("Данные для регистрации введены не полностью!");
+            } else {
+                signUpNewUser();
+            }
+
         });
         exit_button.setOnAction(actionEvent -> {
             FXMLLoader loader = new FXMLLoader();
@@ -74,7 +85,7 @@ public class SignUpController {
         });
     }
 
-    private void openProfile(Patient patient){
+    private void openProfile(Patient patient) {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(Objects.requireNonNull(getClass().getClassLoader().getResource("patient_profile.fxml")));
         try {
@@ -96,6 +107,7 @@ public class SignUpController {
     }
 
     private void signUpNewUser() {
+        exist_label.setText("");
         DatabaseHandler databaseHandler = new DatabaseHandler();
         String firstname = su_first_name.getText();
         String lastname = su_last_name.getText();
@@ -119,14 +131,16 @@ public class SignUpController {
         try {
             date = oldDateFormat.parse(oldDateString);
             dob = newDateFormat.format(date);
+            Patient patient = new Patient(firstname, lastname, username, password, sex, dob, phone_number, email);
+            if (!databaseHandler.isExist(username)) {
+                databaseHandler.signUpUser(patient);
+                openProfile(patient);
+            } else {
+                exist_label.setText("Пользователь с таким логином уже существует!");
+            }
         } catch (ParseException e) {
-            e.printStackTrace();
+            exist_label.setText("Дата рождения введена неверно!");
         }
-
-        Patient patient = new Patient(firstname, lastname, username, password, sex, dob, phone_number, email);
-
-        databaseHandler.signUpUser(patient);
-        openProfile(patient);
     }
 
 }

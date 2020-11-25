@@ -345,4 +345,25 @@ public class DatabaseHandler extends Configs {
         }
         return resultSet;
     }
+
+    public boolean isExist(String username) {
+        ResultSet resultSet = null;
+        String select = "SELECT * FROM " + Const.PATIENT_TABLE +
+                " WHERE " + Const.PATIENT_ID + "=?";
+        try {
+            PreparedStatement preparedStatement = null;
+            preparedStatement = getDbConnection().prepareStatement(select);
+            preparedStatement.setString(1, username);
+
+            resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()){
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }
