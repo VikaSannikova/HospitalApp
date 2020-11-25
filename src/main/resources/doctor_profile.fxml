@@ -100,9 +100,9 @@
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <TableView fx:id="done_pats_table" layoutX="14.0" layoutY="13.0" prefHeight="277.0" prefWidth="671.0" style="-fx-pref-height: 275;">
+                              <TableView fx:id="done_pats_table" layoutX="14.0" layoutY="14.0" prefHeight="277.0" prefWidth="671.0" style="-fx-pref-height: 275;">
                                  <columns>
-                                    <TableColumn fx:id="dor_pat_col" prefWidth="75.0" style="-fx-pref-height: -1;" text="Пациент">
+                                    <TableColumn fx:id="done_pat_col" prefWidth="75.0" style="-fx-pref-height: -1;" text="Пациент">
                                        <columns>
                                           <TableColumn fx:id="done_pat_fn_col" prefWidth="70.39999389648438" text="Имя" />
                                           <TableColumn fx:id="done_pat_ln_col" prefWidth="76.0" text="Фамилия" />
@@ -113,7 +113,6 @@
                                     <TableColumn fx:id="done_date_col" editable="false" prefWidth="131.20001220703125" text="Дата обследования" />
                                     <TableColumn fx:id="done_rec_col" prefWidth="98.4000244140625" text="Рекомендации" />
                                     <TableColumn fx:id="done_cost_col" text="К оплате" />
-                                    <TableColumn fx:id="done_action_col" prefWidth="75.0" style="-fx-botder-color: #FFFFFF;" text="Действие" />
                                  </columns>
                                  <columnResizePolicy>
                                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

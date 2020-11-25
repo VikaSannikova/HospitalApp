@@ -4,7 +4,6 @@ import com.gluonhq.charm.glisten.control.ToggleButtonGroup;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -12,7 +11,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -92,6 +90,33 @@ public class DoctorProfileController {
 
     @FXML
     public TableColumn<DoctorRequest, Void> action_col;
+
+    @FXML
+    private TableView<DoctorRequest> done_pats_table;
+
+    @FXML
+    private TableColumn<DoctorRequest, String> done_pat_col;
+
+    @FXML
+    private TableColumn<DoctorRequest, String> done_pat_fn_col;
+
+    @FXML
+    private TableColumn<DoctorRequest, String> done_pat_ln_col;
+
+    @FXML
+    private TableColumn<DoctorRequest, String> done_pat_sex_col;
+
+    @FXML
+    private TableColumn<DoctorRequest, String> done_diag_col;
+
+    @FXML
+    private TableColumn<DoctorRequest, String> done_date_col;
+
+    @FXML
+    private TableColumn<DoctorRequest, String> done_rec_col;
+
+    @FXML
+    private TableColumn<DoctorRequest, String> done_cost_col;
 
     @FXML
     private Button exit_button;
@@ -183,11 +208,32 @@ public class DoctorProfileController {
             return cell;
         });
         cost_col.setCellValueFactory(new PropertyValueFactory<>("cost"));
-        action_col.setStyle( "-fx-alignment: CENTER;");
+        action_col.setStyle("-fx-alignment: CENTER;");
         addButtonToTable();
-
         editableTable();
-        fillRequestTable();
+        fillActualRequestTable();
+
+        // tab 2
+
+        done_pat_fn_col.setCellValueFactory(new PropertyValueFactory<>("pat_first_name"));
+        done_pat_ln_col.setCellValueFactory(new PropertyValueFactory<>("pat_last_name"));
+        done_pat_sex_col.setCellValueFactory(new PropertyValueFactory<>("pat_sex"));
+        done_diag_col.setCellValueFactory(new PropertyValueFactory<>("diag_name"));
+        done_date_col.setCellValueFactory(new PropertyValueFactory<>("date"));
+        done_rec_col.setCellValueFactory(new PropertyValueFactory<>("recomend"));
+        done_rec_col.setCellFactory(userRequestStringTableColumn -> {
+            TableCell<DoctorRequest, String> cell = new TableCell<>();
+            Text text = new Text();
+            cell.setGraphic(text);
+            cell.setPrefHeight(Control.USE_COMPUTED_SIZE);
+            text.wrappingWidthProperty().bind(rec_col.widthProperty());
+            text.textProperty().bind(cell.itemProperty());
+            return cell;
+        });
+        done_cost_col.setCellValueFactory(new PropertyValueFactory<>("cost"));
+        fillDoneRequestTable();
+
+
 
         exit_button.setOnAction(actionEvent -> {
             FXMLLoader loader = new FXMLLoader();
@@ -209,6 +255,7 @@ public class DoctorProfileController {
             public TableCell<DoctorRequest, Void> call(final TableColumn<DoctorRequest, Void> param) {
                 final TableCell<DoctorRequest, Void> cell = new TableCell<DoctorRequest, Void>() {
                     private final Button btn = new Button("Обновить");
+
                     {
                         // TODO активные и неактивные строчки
                         //btn.setDisable(true);
@@ -217,12 +264,14 @@ public class DoctorProfileController {
                             DoctorRequest doctorRequest = getTableView().getItems().get(getIndex());
                             System.out.println("selectedData: " + doctorRequest);
                             updateUserRequestByDoctor(doctorRequest);
-                            fillRequestTable();
+                            fillActualRequestTable();
+                            fillDoneRequestTable();
                             //btn.setDisable(true);
                         });
 
 
                     }
+
                     @Override
                     public void updateItem(Void item, boolean empty) {
                         super.updateItem(item, empty);
@@ -261,29 +310,23 @@ public class DoctorProfileController {
         actual_pats_table.setEditable(true);
     }
 
-    public void fillRequestTable() {
+    public void fillActualRequestTable() {
         DatabaseHandler databaseHandler = new DatabaseHandler();
-        ResultSet resultSet = databaseHandler.getAllRequestsToDoctor(doctor);
+        ResultSet resultSet = databaseHandler.getActualRequestsToDoctor(doctor);
         try {
             ObservableList<DoctorRequest> doctorRequests = getRequestListToDoctor(resultSet);
             actual_pats_table.setItems(doctorRequests);
-            System.out.println("1");
-//            request_table.setRowFactory((TableView<UserRequest> paramP) -> new TableRow<UserRequest>() {
-//                @Override
-//                protected void updateItem(UserRequest row, boolean paramBoolean) {
-//                    if (row != null) {
-//                        if(row.getDiag_name()!=null){
-//                            setStyle("-fx-background-color: #d9eed4; -fx-text-background-color: black;");
-//                        } else{
-//                            setStyle("-fx-background-color: #ffd4c7; -fx-text-background-color: black;");
-//                        }
-//
-//                    } else {
-//                        setStyle(null);
-//                    }
-//                    super.updateItem(row, paramBoolean);
-//                }
-//            });
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void fillDoneRequestTable() {
+        DatabaseHandler databaseHandler = new DatabaseHandler();
+        ResultSet resultSet = databaseHandler.getDoneRequestsToDoctor(doctor);
+        try {
+            ObservableList<DoctorRequest> doctorRequests = getRequestListToDoctor(resultSet);
+            done_pats_table.setItems(doctorRequests);
         } catch (SQLException e) {
             e.printStackTrace();
         }

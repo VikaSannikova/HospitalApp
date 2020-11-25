@@ -236,7 +236,7 @@ public class DatabaseHandler extends Configs {
         }
     }
 
-    public ResultSet getAllRequestsToDoctor(Doctor doctor) {
+    public ResultSet getActualRequestsToDoctor(Doctor doctor) {
         ResultSet resultSet = null;
         String select = "SELECT " + Const.PATIENT_FIRSTNAME + "," +
                 Const.PATIENT_LASTNAME + "," +
@@ -314,5 +314,35 @@ public class DatabaseHandler extends Configs {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    public ResultSet getDoneRequestsToDoctor(Doctor doctor) {
+        ResultSet resultSet = null;
+        String select = "SELECT " + Const.PATIENT_FIRSTNAME + "," +
+                Const.PATIENT_LASTNAME + "," +
+                Const.PATIENT_SEX + "," +
+                Const.DIAGNOSES_ID + "," +
+                Const.DIAGNOSES_NAME + "," +
+                Const.DIAGNOSES_DATE + "," +
+                Const.RECIPES_RECOMEND + "," +
+                Const.RECIPES_TOTALCOST + " FROM " +
+                Const.PATIENT_TABLE + " pat LEFT OUTER JOIN " + Const.DIAGNOSES_TABLE + " diag ON " +
+                "pat." + Const.PATIENT_ID + "=diag." + Const.DIAGNOSES_PATIENT_ID +
+                " LEFT OUTER JOIN " + Const.RECIPES_TABLE + " rec ON " +
+                "diag." + Const.DIAGNOSES_ID + "=rec." + Const.RECIPES_DIAGNOS_ID +
+                " WHERE " + "diag." + Const.DIAGNOSES_DOCTOR_ID + "=? AND " +
+                Const.DIAGNOSES_NAME + " is not null AND " + Const.RECIPES_RECOMEND + " is not null AND " + Const.RECIPES_TOTALCOST + " is not null";
+        try {
+            PreparedStatement preparedStatement = null;
+            preparedStatement = getDbConnection().prepareStatement(select);
+            preparedStatement.setString(1, doctor.getID());
+
+            resultSet = preparedStatement.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return resultSet;
     }
 }

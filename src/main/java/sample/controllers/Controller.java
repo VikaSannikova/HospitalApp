@@ -157,7 +157,8 @@ public class Controller {
         DoctorProfileController doctorProfileController = loader.getController(); //получаем контроллер для второй формы
         doctorProfileController.setDoctor(doctor);
         doctorProfileController.setFields(doctor);
-        doctorProfileController.fillRequestTable();
+        doctorProfileController.fillActualRequestTable();
+        doctorProfileController.fillDoneRequestTable();
 //        try {
 //            DoctorProfileController.setPatientsList();// передаем необходимые параметры
 //        } catch (SQLException e) {
