@@ -46,11 +46,34 @@ public class DatabaseHandler extends Configs {
             preparedStatement.setString(8, patient.getEmail());
 
             preparedStatement.executeUpdate();
+//            preparedStatement.getGeneratedKeys();
+         } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        ResultSet resultSet = null;
+        String select = "SELECT * FROM " + Const.PATIENT_TABLE + " WHERE " +
+                Const.PATIENT_USERNAME + "=? AND " + Const.PATIENT_PASSWORD + "=?";
+        try {
+            PreparedStatement preparedStatement = null;
+            preparedStatement = getDbConnection().prepareStatement(select);
+            preparedStatement.setString(1, patient.getUsername());
+            preparedStatement.setString(2, patient.getPassword());
+
+            resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()){
+                patient.setID(resultSet.getString(Const.PATIENT_ID));
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+
+
+
     }
 
     public ResultSet getPatient(Patient patient) {
@@ -349,7 +372,8 @@ public class DatabaseHandler extends Configs {
     public boolean isExist(String username) {
         ResultSet resultSet = null;
         String select = "SELECT * FROM " + Const.PATIENT_TABLE +
-                " WHERE " + Const.PATIENT_ID + "=?";
+                " WHERE " + Const.PATIENT_USERNAME + "=?";
+        // TODO PATIENT_ID????
         try {
             PreparedStatement preparedStatement = null;
             preparedStatement = getDbConnection().prepareStatement(select);
